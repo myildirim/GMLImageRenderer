@@ -188,8 +188,8 @@ class GMLImageRenderer:
                 pi = x if (pi==0) else pi 
                 pj = y if (pj==0) else pj
                 # start drawing
+                draw.line((x,y)+(pi,pj), fill=(20,20,20), width=8)
                 draw.line((x,y)+(pi,pj), fill=(255,255,255), width=5)
-                draw.line((x,y)+(pi,pj), fill=(61,118,219), width=3)
                 # end drawing
                 pi = x
                 pj = y
@@ -198,7 +198,7 @@ class GMLImageRenderer:
 
         # write to stdout
 
-#        im = im.filter(ImageFilter.SMOOTH)
+        im = im.filter(ImageFilter.SMOOTH)
 #        im = im.filter(ImageFilter.SMOOTH_MORE)
 #        im = im.filter(ImageFilter.CONTOUR)
 #        im = im.filter(ImageFilter.DETAIL)
