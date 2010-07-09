@@ -1,0 +1,3 @@
+Usage: python GMLImageRenderer.py -file file.gml output.png (will load local file)
+Usage: python GMLImageRenderer.py -id gml_id output.png (will fetch from http://000000book.com/data)
+

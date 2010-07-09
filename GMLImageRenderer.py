@@ -178,7 +178,7 @@ class GMLImageRenderer:
         # temp variables
         pi = 0
         pj = 0
- 
+
         for stroke in self.tag.drawing.strokes: 
             for point in stroke.points:
                 # scale the points according to screenbounds
@@ -202,6 +202,7 @@ class GMLImageRenderer:
 #        im = im.filter(ImageFilter.SMOOTH_MORE)
 #        im = im.filter(ImageFilter.CONTOUR)
 #        im = im.filter(ImageFilter.DETAIL)
+
         im.save(filename, "PNG")
 
 ##########################
@@ -255,3 +256,15 @@ else:
     print "Usage: python GMLImageRenderer.py -file file.gml output.png (will load local file)"
     print "or"
     print "Usage: python GMLImageRenderer.py -id gml_id output.png (will fetch from http://000000book.com/data)"
+
+
+
+
+
+
+
+
+
+
+
+
