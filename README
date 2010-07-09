@@ -1,3 +1,11 @@
-Usage: python GMLImageRenderer.py -file file.gml output.png (will load local file)
-Usage: python GMLImageRenderer.py -id gml_id output.png (will fetch from http://000000book.com/data)
+You will need Python Imaging Library to run the script.
+
+Usage:
+Following will fetch and render the GML with 
+gml_id from http://000000book.com/data and render it to output.png
+$ python GMLImageRenderer.py -id gml_id output.png 
+
+Following will render a local GML file named file.gml and render it to output.png
+$ python GMLImageRenderer.py -file file.gml output.png (will load local file)
+
 
