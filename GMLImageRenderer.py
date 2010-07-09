@@ -136,8 +136,13 @@ class GMLParser:
 
         for point in stroke.getElementsByTagName("pt"):
             p = Point()
-            p.x = float(getText(point.getElementsByTagName("x")[0].childNodes))
-            p.y = float(getText(point.getElementsByTagName("y")[0].childNodes))
+            # Manual 90-degree-rotated iPhone transformation: (x,y) => (y,1-x)
+            if self.environment.up == [1.0,0.0,0.0]:
+              p.x = float(getText(point.getElementsByTagName("y")[0].childNodes))
+              p.y = 1.0 - float(getText(point.getElementsByTagName("x")[0].childNodes))
+            else:
+              p.x = float(getText(point.getElementsByTagName("x")[0].childNodes))
+              p.y = float(getText(point.getElementsByTagName("y")[0].childNodes))
             p.z = float(getText(point.getElementsByTagName("z")[0].childNodes))
             p.t = float(getText(point.getElementsByTagName("time")[0].childNodes))
             s.points.append(p)
