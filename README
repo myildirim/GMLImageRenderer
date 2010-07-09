@@ -1,4 +1,4 @@
-You will need Python Imaging Library to run the script.
+You will need Python Imaging Library (http://www.pythonware.com/products/pil/) to run the script.
 
 Usage:
 Following will fetch and render the GML with 
