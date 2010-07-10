@@ -1,3 +1,8 @@
+# For the GMLs without the environment tag.
+# Screen x and y should manually set here
+DEFAULT_SCREEN_X = 480
+DEFAULT_SCREEN_Y = 320
+
 #############################
 ## CLASS DEFINITIONS START ##
 #############################
@@ -105,8 +110,8 @@ class GMLParser:
         else:
             self.environment.up = [1.0, 0.0, 0.0]
             screenbounds = ScreenBounds()
-            screenbounds.x = 480
-            screenbounds.y = 320
+            screenbounds.x = DEFAULT_SCREEN_X
+            screenbounds.y = DEFAULT_SCREEN_Y
             screenbounds.z = 0
             self.environment.screenbounds = screenbounds
 
