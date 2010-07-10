@@ -1,11 +1,11 @@
 You will need Python Imaging Library (http://www.pythonware.com/products/pil/) to run the script.
 
 Usage:
-Following will fetch and render the GML with 
-gml_id from http://000000book.com/data and render it to output.png
+Following will fetch the GML with gml_id 
+from http://000000book.com/data and render it to output.png
 $ python GMLImageRenderer.py -id gml_id output.png 
 
-Following will render a local GML file named file.gml and render it to output.png
-$ python GMLImageRenderer.py -file file.gml output.png (will load local file)
+Following will load a local GML file named file.gml and render it to output.png
+$ python GMLImageRenderer.py -file file.gml output.png
 
 
