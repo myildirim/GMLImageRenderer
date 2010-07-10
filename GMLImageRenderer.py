@@ -96,8 +96,20 @@ class GMLParser:
         self.tag.header = self.header
         self.tag.environment = self.environment
         self.tag.drawing = self.drawing
-        self.handleHeader(tag.getElementsByTagName("header")[0])
-        self.handleEnvironment(tag.getElementsByTagName("environment")[0])
+
+        if tag.getElementsByTagName("header"):
+            self.handleHeader(tag.getElementsByTagName("header")[0])
+
+        if tag.getElementsByTagName("environment"):
+            self.handleEnvironment(tag.getElementsByTagName("environment")[0])
+        else:
+            self.environment.up = [1.0, 0.0, 0.0]
+            screenbounds = ScreenBounds()
+            screenbounds.x = 480
+            screenbounds.y = 320
+            screenbounds.z = 0
+            self.environment.screenbounds = screenbounds
+
         self.handleDrawing(tag.getElementsByTagName("drawing")[0])
         
     def handleHeader(self, header):
@@ -143,6 +155,7 @@ class GMLParser:
             else:
               p.x = float(getText(point.getElementsByTagName("x")[0].childNodes))
               p.y = float(getText(point.getElementsByTagName("y")[0].childNodes))
+
             p.z = float(getText(point.getElementsByTagName("z")[0].childNodes))
             p.t = float(getText(point.getElementsByTagName("time")[0].childNodes))
             s.points.append(p)
@@ -200,8 +213,6 @@ class GMLImageRenderer:
                 pj = y
 
         del draw 
-
-        # write to stdout
 
         im = im.filter(ImageFilter.SMOOTH)
 #        im = im.filter(ImageFilter.SMOOTH_MORE)
