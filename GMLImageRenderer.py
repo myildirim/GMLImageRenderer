@@ -198,11 +198,13 @@ class GMLImageRenderer:
         im = Image.new("RGB", [sx, sy])
         draw = ImageDraw.Draw(im)
 
-        # temp variables
-        pi = 0
-        pj = 0
+
 
         for stroke in self.tag.drawing.strokes: 
+            # temp variables
+            pi = 0
+            pj = 0
+
             for point in stroke.points:
                 # scale the points according to screenbounds
                 x = point.x*sx
