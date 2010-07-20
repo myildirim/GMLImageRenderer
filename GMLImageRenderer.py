@@ -195,7 +195,7 @@ class GMLImageRenderer:
         sx = self.tag.environment.screenbounds.x 
         sy = self.tag.environment.screenbounds.y
 
-        im = Image.new("RGB", [sx, sy])
+        im = Image.new("RGB", [int(sx), int(sy)])
         draw = ImageDraw.Draw(im)
 
 
