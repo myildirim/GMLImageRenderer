@@ -15,11 +15,15 @@ ids.each do |id|
   puts "id=#{id}"
   file = "output#{id}.png"
 
+  if File.exists?(file)
+    STDERR.puts "File #{file} exists already, skipping"
+    next
+  end
+
   puts `python GMLImageRenderer.py -id #{id} #{file}`
-  #puts `open #{file}`
 
   if !File.exists?(file)
-    puts "ERROR could not generate #{id}"
+    STDERR.puts "ERROR, failed to generate tag #{id}"
     next
   end
 

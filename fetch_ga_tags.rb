@@ -5,7 +5,7 @@ agent = Mechanize.new
 
 tag_ids = []
 page = ENV['PAGE'] || 1
-max_pages = 5 # nil = all
+max_pages = ENV['MAX_PAGES'] || 2 # nil = all
 
 FileUtils.rm_f('ids.yml')
 while true
@@ -13,9 +13,10 @@ while true
   xml = Nokogiri.parse(doc.body)
   ids = (xml/'id').map { |i| i.content.to_i } || []
   puts "page=#{page}, ids=#{ids.inspect}"
-  break if ids.empty? || (!max_pages.nil? && page >= max_pages)
+  break if ids.empty?
   tag_ids += ids
   page += 1
+  break if (!max_pages.nil? && page > max_pages)
 end
 
 puts File.open('ids.yml', 'w+').write(tag_ids.to_yaml)
