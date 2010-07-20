@@ -18,6 +18,11 @@ ids.each do |id|
   puts `python GMLImageRenderer.py -id #{id} #{file}`
   #puts `open #{file}`
 
+  if !File.exists?(file)
+    puts "ERROR could not generate #{id}"
+    next
+  end
+
   c = Curl::Easy.new("http://#{prod ? '000000book.com' : 'localhost:3000'}/data/#{id}/thumbnail")
   c.multipart_form_post = true
   post_field = Curl::PostField.content('image', File.open(file).read)
