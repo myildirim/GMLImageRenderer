@@ -1,3 +1,8 @@
+#!/usr/bin/env ruby
+# Fetch all DustTag tags from 000book and save to ids.yml
+# TODO add an API endpoint to fetch all data w/o thumbnails! Not just DustTag
+# dependencies: mechanize & nokogiri gems, which need the libxml2-dev package
+
 require 'rubygems'
 require 'mechanize'
 
