@@ -10,11 +10,12 @@ agent = Mechanize.new
 
 tag_ids = []
 page = ENV['PAGE'] || 1
-max_pages = ENV['MAX_PAGES'] || 2 # nil = all
+max_pages = ENV['MAX_PAGES'] || 10 # nil = all
 
 FileUtils.rm_f('ids.yml')
 while true
-  doc = agent.get("http://000000book.com/data.xml?app=Graffiti+Analysis+2.0%3A+DustTag&page=#{page}")
+  url = "http://000000book.com/data.xml?page=#{page}"
+  doc = agent.get(url)
   xml = Nokogiri.parse(doc.body)
   ids = (xml/'id').map { |i| i.content.to_i } || []
   puts "page=#{page}, ids=#{ids.inspect}"

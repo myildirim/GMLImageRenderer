@@ -16,7 +16,7 @@ class Header:
     def __init__(self):
         self.client = Client()
 
-class Client: 
+class Client:
     def __init__(self):
         self.name = ""
         self.version = ""
@@ -69,7 +69,7 @@ class Environment:
 import xml.dom.minidom
 from xml.dom.minidom import parse, parseString
 
-        
+
 def getText(nodelist):
     rc = []
     for node in nodelist:
@@ -77,6 +77,15 @@ def getText(nodelist):
             rc.append(node.data)
         return ''.join(rc)
 
+# getText() wrappers to handle missing nodes
+def getTextFromNode(name, node, default=''):
+    try:
+        return getText(node.getElementsByTagName(name)[0].childNodes)
+    except:
+        return default
+
+def getNumberFromNode(name, node, default='0'):
+    return getTextFromNode(name, node, default)
 
 
 class GMLParser:
@@ -116,13 +125,13 @@ class GMLParser:
             self.environment.screenbounds = screenbounds
 
         self.handleDrawing(tag.getElementsByTagName("drawing")[0])
-        
+
     def handleHeader(self, header):
-        self.client.name = getText(header.getElementsByTagName("name")[0].childNodes)
-        self.client.version = getText(header.getElementsByTagName("version")[0].childNodes)
-        self.client.username = getText(header.getElementsByTagName("username")[0].childNodes)
-        self.client.keywords = getText(header.getElementsByTagName("keywords")[0].childNodes)
-        self.client.uniqueKey = getText(header.getElementsByTagName("uniqueKey")[0].childNodes)
+        self.client.name = getTextFromNode("name", header)
+        self.client.version = getTextFromNode("version", header)
+        self.client.username = getTextFromNode("username", header)
+        self.client.keywords = getTextFromNode("keywords", header)
+        self.client.uniqueKey = getTextFromNode("uniqueKey", header)
         self.header.client = self.client
 
     def handleEnvironment(self, environment):
@@ -138,8 +147,8 @@ class GMLParser:
         self.screenbounds.y = float(getText(screenbounds.getElementsByTagName("y")[0].childNodes))
         self.screenbounds.z = float(getText(screenbounds.getElementsByTagName("z")[0].childNodes))
         self.environment.screenbounds = self.screenbounds
-    
-    
+
+
     def handleDrawing(self, drawing):
         for stroke in drawing.getElementsByTagName("stroke"):
             sobject = self.handleStroke(stroke)
@@ -161,11 +170,11 @@ class GMLParser:
               p.x = float(getText(point.getElementsByTagName("x")[0].childNodes))
               p.y = float(getText(point.getElementsByTagName("y")[0].childNodes))
 
-            p.z = float(getText(point.getElementsByTagName("z")[0].childNodes))
-            p.t = float(getText(point.getElementsByTagName("time")[0].childNodes))
+            p.z = float(getNumberFromNode('z', point))
+            p.t = float(getNumberFromNode('time', point))
             s.points.append(p)
 
-        return s     
+        return s
 
     def handleGML(self):
         self.gmlParser(self.gmlData)
@@ -192,7 +201,7 @@ class GMLImageRenderer:
 
     def render(self, filename):
 
-        sx = self.tag.environment.screenbounds.x 
+        sx = self.tag.environment.screenbounds.x
         sy = self.tag.environment.screenbounds.y
 
         im = Image.new("RGB", [int(sx), int(sy)])
@@ -200,7 +209,7 @@ class GMLImageRenderer:
 
 
 
-        for stroke in self.tag.drawing.strokes: 
+        for stroke in self.tag.drawing.strokes:
             # temp variables
             pi = 0
             pj = 0
@@ -210,7 +219,7 @@ class GMLImageRenderer:
                 x = point.x*sx
                 y = point.y*sy
                 # for the first point
-                pi = x if (pi==0) else pi 
+                pi = x if (pi==0) else pi
                 pj = y if (pj==0) else pj
                 # start drawing
                 draw.line((x,y)+(pi,pj), fill=(20,20,20), width=8)
@@ -219,7 +228,7 @@ class GMLImageRenderer:
                 pi = x
                 pj = y
 
-        del draw 
+        del draw
 
         im = im.filter(ImageFilter.SMOOTH)
 #        im = im.filter(ImageFilter.SMOOTH_MORE)
@@ -244,7 +253,7 @@ class GMLFetcher:
     def __init__(self,id):
         response = urllib2.urlopen('%s%s.gml'%(DATA_URL,str(id)))
         contents = response.read()
-        
+
         gmlParser = GMLParser(contents)
         self.tag = gmlParser.handleGML()
 ####################
@@ -264,21 +273,25 @@ def readfile(filename):
 
 
 ######### RUN ############
-if(sys.argv[1] == "-file"):
-    contents = readfile(sys.argv[2])
-    gmlParser = GMLParser(contents)
-    gmlRenderer = GMLImageRenderer(gmlParser.handleGML())
-    gmlRenderer.render(sys.argv[3])
+try:
+    if(sys.argv[1] == "-file"):
+        contents = readfile(sys.argv[2])
+        gmlParser = GMLParser(contents)
+        gmlRenderer = GMLImageRenderer(gmlParser.handleGML())
+        gmlRenderer.render(sys.argv[3])
 
-elif(sys.argv[1] == "-id"):
-    fetchedGML = GMLFetcher(sys.argv[2])
-    gmlRenderer = GMLImageRenderer(fetchedGML.tag)
-    gmlRenderer.render(sys.argv[3])
-    
-else:
+    elif(sys.argv[1] == "-id"):
+        fetchedGML = GMLFetcher(sys.argv[2])
+        gmlRenderer = GMLImageRenderer(fetchedGML.tag)
+        gmlRenderer.render(sys.argv[3])
+
+    else:
+        raise 'Bad arguments'
+
+except:
     print "Usage: python GMLImageRenderer.py -file file.gml output.png (will load local file)"
     print "or"
-    print "Usage: python GMLImageRenderer.py -id gml_id output.png (will fetch from http://000000book.com/data)"
+    print "Usage: python GMLImageRenderer.py -id gml_id output.png (will fetch from "+DATA_URL+")"
 
 
 
