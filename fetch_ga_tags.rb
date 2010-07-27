@@ -15,6 +15,7 @@ max_pages = ENV['MAX_PAGES'] || 10 # nil = all
 FileUtils.rm_f('ids.yml')
 while true
   url = "http://000000book.com/data.xml?page=#{page}"
+  url += "&app=Graffiti+Analysis+2.0:+DustTag"
   doc = agent.get(url)
   xml = Nokogiri.parse(doc.body)
   ids = (xml/'id').map { |i| i.content.to_i } || []
