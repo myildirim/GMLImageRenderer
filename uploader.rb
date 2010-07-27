@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 # Use our fetched tag data to generate images using GMLImageRenderer.py
 # requires the 'curb' gem, which depends on the libcurl-dev package
 
