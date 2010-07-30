@@ -19,7 +19,7 @@ ids.each do |id|
 
   # Don't clobber existing files unless CLOBBER=1
   if File.exists?(file) && ENV['CLOBBER'].nil?
-    STDERR.puts "* #{id}: Output file #{file.inspect} exists already, skipping"
+    puts "* #{id}: Output file #{file.inspect} exists already, skipping"
     next
   end
 
