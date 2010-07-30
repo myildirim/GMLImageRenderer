@@ -10,7 +10,7 @@ agent = Mechanize.new
 
 tag_ids = []
 page = ENV['PAGE'] || 1
-max_pages = ENV['MAX_PAGES'] || 10 # nil = all
+max_pages = ENV['MAX_PAGES'] || 5 # nil = all
 
 FileUtils.rm_f('ids.yml')
 while true
