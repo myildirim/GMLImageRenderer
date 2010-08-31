@@ -4,18 +4,20 @@
 
 require 'yaml'
 require 'benchmark'
+require 'fileutils'
 require 'rubygems'
 require 'curb'
 
 prod = true
-file = ARGV[1] || "output.png"
 
 # Parse data compiled by fetch_ga_tags.rb
 ids = YAML.load(File.open('ids.yml').read)
 STDOUT.puts "000000book Thumbnail Uploader -- #{ids.length} tag ids loaded."
 
+FileUtils.mkdir_p 'images'
+
 ids.each do |id|
-  file = "output#{id}.png"
+  file = "images/output#{id}.png"
 
   # Don't clobber existing files unless CLOBBER=1
   if File.exists?(file) && ENV['CLOBBER'].nil?
