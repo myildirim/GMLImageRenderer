@@ -135,18 +135,23 @@ class GMLParser:
         self.header.client = self.client
 
     def handleEnvironment(self, environment):
-        up = environment.getElementsByTagName("up")[0]
         up_vec = [0,0,0]
-        up_vec[0] = float(getText(up.getElementsByTagName("x")[0].childNodes))
-        up_vec[1] = float(getText(up.getElementsByTagName("y")[0].childNodes))
-        up_vec[2] = float(getText(up.getElementsByTagName("z")[0].childNodes))
+        tag = environment.getElementsByTagName("up")
+        if tag:
+            up = tag[0]
+            up_vec[0] = float(getText(up.getElementsByTagName("x")[0].childNodes))
+            up_vec[1] = float(getText(up.getElementsByTagName("y")[0].childNodes))
+            up_vec[2] = float(getText(up.getElementsByTagName("z")[0].childNodes))
         self.environment.up = up_vec
 
-        screenbounds = environment.getElementsByTagName("screenBounds")[0]
-        self.screenbounds.x = float(getText(screenbounds.getElementsByTagName("x")[0].childNodes))
-        self.screenbounds.y = float(getText(screenbounds.getElementsByTagName("y")[0].childNodes))
-        self.screenbounds.z = float(getText(screenbounds.getElementsByTagName("z")[0].childNodes))
-        self.environment.screenbounds = self.screenbounds
+        tag = environment.getElementsByTagName("screenBounds")
+        # Defaults set elsewhere...
+        if tag:
+            screenbounds = tag[0]
+            self.screenbounds.x = float(getText(screenbounds.getElementsByTagName("x")[0].childNodes))
+            self.screenbounds.y = float(getText(screenbounds.getElementsByTagName("y")[0].childNodes))
+            self.screenbounds.z = float(getText(screenbounds.getElementsByTagName("z")[0].childNodes))
+            self.environment.screenbounds = self.screenbounds
 
 
     def handleDrawing(self, drawing):
@@ -273,34 +278,20 @@ def readfile(filename):
 
 
 ######### RUN ############
-try:
-    if(sys.argv[1] == "-file"):
-        contents = readfile(sys.argv[2])
-        gmlParser = GMLParser(contents)
-        gmlRenderer = GMLImageRenderer(gmlParser.handleGML())
-        gmlRenderer.render(sys.argv[3])
+if(len(sys.argv) > 3 and sys.argv[1] == "-file"):
+    contents = readfile(sys.argv[2])
+    gmlParser = GMLParser(contents)
+    gmlRenderer = GMLImageRenderer(gmlParser.handleGML())
+    gmlRenderer.render(sys.argv[3])
 
-    elif(sys.argv[1] == "-id"):
-        fetchedGML = GMLFetcher(sys.argv[2])
-        gmlRenderer = GMLImageRenderer(fetchedGML.tag)
-        gmlRenderer.render(sys.argv[3])
+elif(len(sys.argv) > 3 and sys.argv[1] == "-id"):
+    fetchedGML = GMLFetcher(sys.argv[2])
+    gmlRenderer = GMLImageRenderer(fetchedGML.tag)
+    gmlRenderer.render(sys.argv[3])
 
-    else:
-        raise 'Bad arguments'
-
-except:
+else:
     print "Usage: python GMLImageRenderer.py -file file.gml output.png (will load local file)"
     print "or"
     print "Usage: python GMLImageRenderer.py -id gml_id output.png (will fetch from "+DATA_URL+")"
-
-
-
-
-
-
-
-
-
-
 
 
