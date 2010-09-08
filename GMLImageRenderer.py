@@ -142,6 +142,9 @@ class GMLParser:
             up_vec[0] = float(getText(up.getElementsByTagName("x")[0].childNodes))
             up_vec[1] = float(getText(up.getElementsByTagName("y")[0].childNodes))
             up_vec[2] = float(getText(up.getElementsByTagName("z")[0].childNodes))
+        else:
+            up_vec = [0.0, 0.0, 0.0]
+
         self.environment.up = up_vec
 
         tag = environment.getElementsByTagName("screenBounds")
@@ -152,6 +155,12 @@ class GMLParser:
             self.screenbounds.y = float(getText(screenbounds.getElementsByTagName("y")[0].childNodes))
             self.screenbounds.z = float(getText(screenbounds.getElementsByTagName("z")[0].childNodes))
             self.environment.screenbounds = self.screenbounds
+        else:
+            screenbounds = ScreenBounds()
+            screenbounds.x = DEFAULT_SCREEN_X
+            screenbounds.y = DEFAULT_SCREEN_Y
+            screenbounds.z = 0
+            self.environment.screenbounds = screenbounds            
 
 
     def handleDrawing(self, drawing):
